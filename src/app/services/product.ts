@@ -38,7 +38,19 @@ export class ProductService {
     );
   }
 
-  updateProduct(id: number, dto: any): Observable<any> {
+  updateProduct(id: number, dto: {
+    productName:   string;
+    categoryId:    number | null;
+    brand?:        string | null;
+    description?:  string | null;
+    sku?:          string | null;
+    price:         number;
+    discountPrice?: number | null;
+    weight?:       number | null;
+    isFeatured?:   boolean;
+    isActive?:     boolean;
+    imageUrl?:     string | null;
+  }): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, dto);
   }
 

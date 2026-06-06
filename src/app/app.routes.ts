@@ -14,7 +14,7 @@ export const routes: Routes = [
       import('./features/auth/pages/login/login').then(m => m.Login)
   },
 
-  /* ─── Protected shell: sidebar layout wraps all app pages ─── */
+  /* ─── Authenticated shell: sidebar layout wraps all pages ─── */
   {
     path: '',
     loadComponent: () =>
@@ -26,20 +26,24 @@ export const routes: Routes = [
           import('./features/dashboard/dashboard').then(m => m.Dashboard)
       },
       {
+        path: 'products',
+        loadComponent: () =>
+          import('./features/products/product-list/product-list').then(m => m.ProductList)
+      },
+      {
         path: 'products/add',
         loadComponent: () =>
           import('./features/products/add-product/add-product').then(m => m.AddProduct)
       },
-      /* Placeholder redirect for bare /products */
       {
-        path: 'products',
-        redirectTo: 'products/add',
-        pathMatch: 'full'
+        path: 'products/edit/:id',
+        loadComponent: () =>
+          import('./features/products/edit-product/edit-product').then(m => m.EditProduct)
       }
     ]
   },
 
-  /* Catch-all fallback */
+  /* Catch-all */
   {
     path: '**',
     redirectTo: 'dashboard'

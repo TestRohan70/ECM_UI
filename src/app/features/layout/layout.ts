@@ -14,7 +14,7 @@ export class Layout {
 
   navItems = [
     { label: 'Dashboard',  icon: 'dashboard',  route: '/dashboard' },
-    { label: 'Products',   icon: 'products',   route: '/products/add' },
+    { label: 'Products',   icon: 'products',   route: '/products' },
     { label: 'Categories', icon: 'categories', route: '/categories' },
     { label: 'Brands',     icon: 'brands',     route: '/brands' },
     { label: 'Stores',     icon: 'stores',     route: '/stores' },

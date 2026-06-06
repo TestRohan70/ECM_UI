@@ -1,0 +1,237 @@
+<div class="page-wrapper">
+
+  <!-- ═══════ PAGE HEADER ═══════ -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">
+        Edit Product
+        @if (productId) {
+          <span class="id-badge">#{{ productId }}</span>
+        }
+      </h1>
+      <nav class="breadcrumb">
+        <span>Dashboard</span>
+        <span class="sep">/</span>
+        <span class="link" (click)="goBack()">Products</span>
+        <span class="sep">/</span>
+        <span class="active">Edit Product</span>
+      </nav>
+    </div>
+    <button class="btn-back" (click)="goBack()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Back to Products
+    </button>
+  </div>
+
+  <!-- ═══════ LOADING SKELETON ═══════ -->
+  @if (isLoadingProduct) {
+    <div class="skeleton-wrap">
+      @for (i of [1,2,3]; track i) {
+        <div class="ske-card">
+          <div class="ske ske-title"></div>
+          <div class="ske-fields">
+            <div class="ske ske-field"></div>
+            <div class="ske ske-field"></div>
+            <div class="ske ske-field"></div>
+            <div class="ske ske-field"></div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ═══════ LOAD ERROR ═══════ -->
+  @else if (loadError) {
+    <div class="alert alert-error">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      {{ loadError }}
+      <button class="btn-back-sm" (click)="goBack()">← Back to List</button>
+    </div>
+  }
+
+  <!-- ═══════ FORM ═══════ -->
+  @else {
+
+    <!-- Alerts -->
+    @if (successMessage) {
+      <div class="alert alert-success">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        {{ successMessage }}
+      </div>
+    }
+    @if (errorMessage) {
+      <div class="alert alert-error">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        {{ errorMessage }}
+      </div>
+    }
+
+    <!-- ══ FORM GRID ══ -->
+    <div class="form-grid">
+
+      <!-- ─── LEFT COLUMN ─── -->
+      <div class="col">
+
+        <!-- 1. Basic Information -->
+        <div class="form-card">
+          <h2 class="section-title"><span class="section-num">1.</span> Basic Information</h2>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Product Name <span class="req">*</span></label>
+              <input class="field-input" type="text" [(ngModel)]="productName" placeholder="Enter product name">
+            </div>
+            <div class="field">
+              <label class="field-label">Category <span class="req">*</span></label>
+              <select class="field-select" [(ngModel)]="categoryId">
+                <option [ngValue]="null">Select Category</option>
+                @for (cat of categories; track cat.id) {
+                  <option [ngValue]="cat.id">{{ cat.name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Brand</label>
+              <input class="field-input" type="text" [(ngModel)]="brand" placeholder="Enter brand name">
+            </div>
+            <div class="field">
+              <label class="field-label">Description</label>
+              <textarea class="field-textarea" [(ngModel)]="description" rows="3" placeholder="Enter product description"></textarea>
+            </div>
+          </div>
+
+          <div class="field field-half">
+            <label class="field-label">SKU</label>
+            <input class="field-input" type="text" [(ngModel)]="sku" placeholder="Enter SKU">
+          </div>
+        </div>
+
+        <!-- 4. Media -->
+        <div class="form-card">
+          <h2 class="section-title"><span class="section-num">4.</span> Media</h2>
+
+          <div class="field">
+            <label class="field-label">Image URL</label>
+            <input class="field-input" type="text" [(ngModel)]="imageUrl" placeholder="https://example.com/image.jpg">
+          </div>
+
+          @if (imageUrl) {
+            <div class="img-preview-wrap">
+              <img [src]="imageUrl" alt="Product preview" class="img-preview"
+                   onerror="this.style.display='none'">
+              <p class="img-hint">Preview (if URL is valid)</p>
+            </div>
+          }
+        </div>
+
+      </div>
+
+      <!-- ─── RIGHT COLUMN ─── -->
+      <div class="col">
+
+        <!-- 2. Pricing -->
+        <div class="form-card">
+          <h2 class="section-title"><span class="section-num">2.</span> Pricing</h2>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Selling Price <span class="req">*</span></label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">₹</span>
+                <input class="field-input with-prefix" type="number" [(ngModel)]="price"
+                       placeholder="0.00" min="0" step="0.01">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Discount Price</label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">₹</span>
+                <input class="field-input with-prefix" type="number" [(ngModel)]="discountPrice"
+                       placeholder="0.00" min="0" step="0.01">
+              </div>
+            </div>
+          </div>
+
+          <div class="price-note">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            Discount price must be less than or equal to selling price.
+          </div>
+        </div>
+
+        <!-- 3. Product Details -->
+        <div class="form-card">
+          <h2 class="section-title"><span class="section-num">3.</span> Product Details</h2>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Weight (kg)</label>
+              <input class="field-input" type="number" [(ngModel)]="weight"
+                     placeholder="0.00" min="0" step="0.01">
+            </div>
+
+            <div class="field">
+              <label class="field-label">Visibility</label>
+              <div class="toggle-group">
+                <div class="toggle-row">
+                  <label class="toggle-switch">
+                    <input type="checkbox" [(ngModel)]="isActive">
+                    <span class="slider"></span>
+                  </label>
+                  <span class="toggle-text">Active (visible to buyers)</span>
+                </div>
+                <div class="toggle-row" style="margin-top:10px">
+                  <label class="toggle-switch">
+                    <input type="checkbox" [(ngModel)]="isFeatured">
+                    <span class="slider"></span>
+                  </label>
+                  <span class="toggle-text">Show in Featured section</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════ FORM ACTIONS ═══════ -->
+    <div class="form-actions">
+      <button class="btn-save" (click)="saveProduct()" [disabled]="isSubmitting">
+        @if (isSubmitting) {
+          <svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+          </svg>
+          Saving…
+        } @else {
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+          Save Changes
+        }
+      </button>
+      <button class="btn-cancel" (click)="goBack()" [disabled]="isSubmitting">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        Discard
+      </button>
+    </div>
+
+  }<!-- /else -->
+
+</div><!-- /page-wrapper -->

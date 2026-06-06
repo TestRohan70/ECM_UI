@@ -103,7 +103,7 @@ export class AddProduct {
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/products']);
   }
 
   saveProduct(): void {
@@ -151,7 +151,7 @@ export class AddProduct {
       next: (res: any) => {
         this.isSubmitting   = false;
         this.successMessage = `Product "${this.productName}" created successfully! (ID: ${res.productId})`;
-        setTimeout(() => this.router.navigate(['/dashboard']), 2500);
+        setTimeout(() => this.router.navigate(['/products']), 2500);
       },
       error: () => {
         this.isSubmitting = false;
