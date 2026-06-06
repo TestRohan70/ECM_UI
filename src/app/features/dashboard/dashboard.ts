@@ -1,18 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-
-interface NavGroup {
-  group: string;
-  items: NavItem[];
-}
-
-interface NavItem {
-  label: string;
-  icon: string;
-  badge?: number;
-  active?: boolean;
-}
 
 interface KpiCard {
   title: string;
@@ -45,45 +32,15 @@ interface Order {
 })
 export class Dashboard {
 
-  private router = inject(Router);
-
-  currentDate = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
-  navGroups: NavGroup[] = [
-    {
-      group: 'OVERVIEW',
-      items: [
-        { label: 'Main Dashboard', icon: 'grid', active: true },
-        { label: 'Website Traffic', icon: 'bar-chart' },
-        { label: 'Analytics', icon: 'trending-up' },
-      ]
-    },
-    {
-      group: 'MANAGEMENT',
-      items: [
-        { label: 'Orders', icon: 'bar-chart-2', badge: 8 },
-        { label: 'Products', icon: 'package' },
-        { label: 'Customers', icon: 'users' },
-        { label: 'Partners', icon: 'layout' },
-        { label: 'International', icon: 'globe' },
-      ]
-    },
-    {
-      group: 'SETTINGS',
-      items: [
-        { label: 'SEO', icon: 'pie-chart' },
-        { label: 'Calendar', icon: 'calendar' },
-        { label: 'Password', icon: 'lock' },
-        { label: 'Sales', icon: 'monitor' },
-      ]
-    }
-  ];
+  currentDate = new Date().toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
 
   kpiCards: KpiCard[] = [
-    { title: 'Total Revenue',    value: '$284,520',  change: +12.5, icon: 'dollar',   color: '#6366f1' },
-    { title: 'Total Orders',     value: '14,820',    change: +8.2,  icon: 'shopping', color: '#10b981' },
-    { title: 'Active Customers', value: '9,340',     change: +5.1,  icon: 'users2',   color: '#f59e0b' },
-    { title: 'Avg. Order Value', value: '$19.20',    change: -2.3,  icon: 'target',   color: '#ef4444' },
+    { title: 'Total Revenue',    value: '$284,520', change: +12.5, icon: 'dollar',   color: '#4f46e5' },
+    { title: 'Total Orders',     value: '14,820',   change: +8.2,  icon: 'shopping', color: '#10b981' },
+    { title: 'Active Customers', value: '9,340',    change: +5.1,  icon: 'users2',   color: '#f59e0b' },
+    { title: 'Avg. Order Value', value: '$19.20',   change: -2.3,  icon: 'target',   color: '#ef4444' },
   ];
 
   chartData: ChartPoint[] = [
@@ -97,11 +54,11 @@ export class Dashboard {
   ];
 
   recentOrders: Order[] = [
-    { id: '#ORD-8821', customer: 'James Wilson',   product: 'MacBook Pro 14"',   amount: 2499, status: 'Completed', date: 'Jun 4, 2026' },
-    { id: '#ORD-8820', customer: 'Sarah Chen',     product: 'iPhone 16 Pro',     amount: 1099, status: 'Pending',   date: 'Jun 4, 2026' },
-    { id: '#ORD-8819', customer: 'Michael Brown',  product: 'AirPods Pro',       amount: 249,  status: 'Completed', date: 'Jun 3, 2026' },
-    { id: '#ORD-8818', customer: 'Emma Davis',     product: 'iPad Air M2',       amount: 749,  status: 'Cancelled', date: 'Jun 3, 2026' },
-    { id: '#ORD-8817', customer: 'Robert Taylor',  product: 'Apple Watch Ultra', amount: 799,  status: 'Completed', date: 'Jun 2, 2026' },
+    { id: '#ORD-8821', customer: 'James Wilson',  product: 'MacBook Pro 14"',   amount: 2499, status: 'Completed', date: 'Jun 4, 2026' },
+    { id: '#ORD-8820', customer: 'Sarah Chen',    product: 'iPhone 16 Pro',     amount: 1099, status: 'Pending',   date: 'Jun 4, 2026' },
+    { id: '#ORD-8819', customer: 'Michael Brown', product: 'AirPods Pro',       amount: 249,  status: 'Completed', date: 'Jun 3, 2026' },
+    { id: '#ORD-8818', customer: 'Emma Davis',    product: 'iPad Air M2',       amount: 749,  status: 'Cancelled', date: 'Jun 3, 2026' },
+    { id: '#ORD-8817', customer: 'Robert Taylor', product: 'Apple Watch Ultra', amount: 799,  status: 'Completed', date: 'Jun 2, 2026' },
   ];
 
   /* ── SVG chart ── */
@@ -135,15 +92,5 @@ export class Dashboard {
     const pts  = this.chartData.map((p, i) => `${this.xPos(i)},${this.yPos(p.value)}`).join(' L ');
     const base = this.paddingTop + this.plotHeight;
     return `M ${this.xPos(0)},${base} L ${pts} L ${this.xPos(this.chartData.length - 1)},${base} Z`;
-  }
-
-  setActive(item: NavItem): void {
-    this.navGroups.forEach(g => g.items.forEach(n => (n.active = false)));
-    item.active = true;
-  }
-
-  logout(): void {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
   }
 }
