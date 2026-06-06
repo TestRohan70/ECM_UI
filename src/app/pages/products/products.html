@@ -1,0 +1,37 @@
+<div class="container mt-4">
+
+  <h1 class="mb-4">Products</h1>
+
+  <div class="row">
+
+    <div class="col-md-3 mb-4"
+         *ngFor="let product of products">
+
+      <div class="card h-100 shadow-sm">
+
+        <img
+          [src]="product.imageUrl || 'https://via.placeholder.com/300'"
+          class="card-img-top"
+          height="250">
+
+        <div class="card-body">
+
+          <h5>{{product.productName}}</h5>
+
+          <p>{{product.description}}</p>
+
+          <h4>₹ {{product.price}}</h4>
+
+          <button class="btn btn-primary w-100">
+            Add To Cart
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
