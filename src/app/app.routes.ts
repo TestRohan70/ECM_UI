@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
   /* ─── Authenticated shell: sidebar layout wraps all pages ─── */
   {
     path: '',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./features/layout/layout').then(m => m.Layout),
     children: [
